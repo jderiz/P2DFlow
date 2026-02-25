@@ -21,8 +21,9 @@ The codes have also been uploaded to [Huggingface](https://huggingface.co/BLEACH
 4. [Training](#Training)
 5. [Inference](#Inference)
 6. [Evaluation](#Evaluation)
-7. [License](#License)
-8. [Citation](#Citation)
+7. [Fine-Tuning on a Custom MD Dataset](#Fine-Tuning-on-a-Custom-MD-Dataset)
+8. [License](#License)
+9. [Citation](#Citation)
 
 
 ## Installation
@@ -99,6 +100,9 @@ To evaluate PCA, run:
 python ./analysis/pca_analyse.py --pred_pdb_dir ${pred_pdb_dir} --target_dir ${target_dir} --crystal_dir ${crystal_dir}
 ```
 Evaluation results will be similar to `evaluation_example` in [Google Drive](https://drive.google.com/drive/folders/11mdVfMi2rpVn7nNG2mQAGA5sNXCKePZj?usp=sharing)
+
+## Fine-Tuning on a Custom MD Dataset
+A step-by-step guide for fine-tuning P2DFlow on your own MD trajectories is available in [FINE_TUNING_TUTORIAL.md](FINE_TUNING_TUTORIAL.md).
 
 ## License
 This project is licensed under the terms of the GPL-3.0 license.

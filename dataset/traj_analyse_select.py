@@ -14,7 +14,7 @@ from MDAnalysis.analysis import align
 
 
 def cal_energy(para1):
-    file_md, dirpath = para1
+    file_md, dirpath, traj_format = para1
     mdpath = os.path.join(dirpath, file_md)
     filename = file_md
 
@@ -36,7 +36,7 @@ def cal_energy(para1):
         }
 
     for xtc_idx in range(1,4):
-        trajectory_filepath = os.path.join(mdpath,filename+"_R"+str(xtc_idx)+".xtc") 
+        trajectory_filepath = os.path.join(mdpath,filename+"_R"+str(xtc_idx)+"."+traj_format)
 
         u = mda.Universe(topology_filepath, trajectory_filepath)
         
@@ -125,6 +125,8 @@ if __name__ == "__main__":
 
     parser.add_argument("--select_num", type=int, default=100)
     parser.add_argument("--select_dir", type=str, default="./dataset/ATLAS/select")
+    parser.add_argument("--traj_format", type=str, default="xtc", choices=["xtc", "dcd"],
+                        help="Trajectory file format (xtc or dcd)")
 
     args = parser.parse_args()
 
@@ -137,7 +139,7 @@ if __name__ == "__main__":
         file_cont = f.read()
         file_list = file_cont.split("\n")
 
-    para1_list = [(file, args.dir_path) for file in file_list]
+    para1_list = [(file, args.dir_path, args.traj_format) for file in file_list]
     para2_list = [(file, args.dir_path, args.select_dir, args.select_num) for file in file_list]
 
     info_total_all = {
