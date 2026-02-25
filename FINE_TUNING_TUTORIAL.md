@@ -39,9 +39,11 @@ P2DFlow expects one sub-directory per protein, each containing:
 | File | Description |
 |------|-------------|
 | `<NAME>.pdb` | Reference / topology structure |
-| `<NAME>_R1.xtc` | Trajectory replica 1 |
-| `<NAME>_R2.xtc` | Trajectory replica 2 |
-| `<NAME>_R3.xtc` | Trajectory replica 3 |
+| `<NAME>_R1.xtc` or `<NAME>_R1.dcd` | Trajectory replica 1 |
+| `<NAME>_R2.xtc` or `<NAME>_R2.dcd` | Trajectory replica 2 |
+| `<NAME>_R3.xtc` or `<NAME>_R3.dcd` | Trajectory replica 3 |
+
+Both **XTC** (GROMACS) and **DCD** (NAMD / CHARMM / AMBER) formats are supported via the `--traj_format` flag (default: `xtc`).
 
 > **Note:** The scripts assume exactly three replicas (`_R1`, `_R2`, `_R3`). If your dataset has a different number of replicas, edit the loop in `dataset/traj_analyse_select.py` accordingly.
 
@@ -52,12 +54,12 @@ dataset/
 └── my_md_data/
     ├── PROT1/
     │   ├── PROT1.pdb
-    │   ├── PROT1_R1.xtc
+    │   ├── PROT1_R1.xtc   # or PROT1_R1.dcd
     │   ├── PROT1_R2.xtc
     │   └── PROT1_R3.xtc
     └── PROT2/
         ├── PROT2.pdb
-        ├── PROT2_R1.xtc
+        ├── PROT2_R1.xtc   # or PROT2_R1.dcd
         ├── PROT2_R2.xtc
         └── PROT2_R3.xtc
 ```
@@ -75,11 +77,20 @@ ls dataset/my_md_data/ > dataset/my_md_data/my_filenames.txt
 `dataset/traj_analyse_select.py` loops over every protein in the filename list, computes a 2-D Gaussian KDE over (radius-of-gyration, RMSD-to-reference) to estimate the free energy of each frame, and then samples `--select_num` frames spanning the conformational landscape.
 
 ```bash
+# XTC trajectories (GROMACS) – default
 python dataset/traj_analyse_select.py \
     --dir_path   dataset/my_md_data \
     --filename   my_filenames.txt \
     --select_num 100 \
     --select_dir dataset/my_md_data/select
+
+# DCD trajectories (NAMD / CHARMM / AMBER)
+python dataset/traj_analyse_select.py \
+    --dir_path    dataset/my_md_data \
+    --filename    my_filenames.txt \
+    --select_num  100 \
+    --select_dir  dataset/my_md_data/select \
+    --traj_format dcd
 ```
 
 **Key outputs**
